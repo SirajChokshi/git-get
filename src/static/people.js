@@ -1,9 +1,13 @@
+import React, {useState} from "react";
+const [user, setUser] = useState()
+
 export const getUser = (username) => {
     let url = "https://api.github.com/users/" + username;
-    const info = fetch(url)
+    fetch(url)
         .then((data) => {
             return data.json();
         }).then((data) => {
-            console.log(data);
+            setUser(data['info']);
+            console.log(user);
         });
 };
