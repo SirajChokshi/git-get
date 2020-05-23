@@ -1,11 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Router } from '@reach/router'
+
 import Index from './views/index'
+import Profile from './views/profile'
+import Error from './views/error'
 import './App.css';
 
 function App() {
   return (
-    <Index />
+    <Router>
+      <Index path="/" />
+      <Profile path="/:username" />
+      <Error default />
+    </Router>
   );
 }
 
