@@ -7,7 +7,7 @@ const client_secret = `b6b9b2b580c0dfc25499d34d4e4fc9d4f33f0ce2`
 
 const Profile = (props) => {
 
-    const [user, setUser] = useState({notLoaded: true})
+    const [user, setUser] = useState({loading: true})
 
     const fetchUser = (username) => {
         fetch(`https://api.github.com/users/${username}?client_id=${client_id}?client_secret=${client_secret}`,
@@ -29,7 +29,7 @@ const Profile = (props) => {
     return (
         <div className="App">
             <header className="App-header">
-                {user.notLoaded
+                {user.loading
                     ?
                     <FaSpinner size={"1.3em"} className={"spin-icon"} />
                     :
