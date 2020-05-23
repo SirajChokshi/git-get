@@ -1,9 +1,9 @@
-export const getUser = (async (username) => {
+export const getUser = (username) => {
     let url = "https://api.github.com/users/" + username;
-    const info = await fetch(url)
+    const info = fetch(url)
         .then((data) => {
-            console.log(data)
-            return data.json()
-        })
-    return info['login'];
-});
+            return data.json();
+        }).then((data) => {
+            console.log(data);
+        });
+};
