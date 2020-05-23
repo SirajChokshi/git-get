@@ -4,7 +4,7 @@ Git Get is a simple to use Github Profile Analysis tool. Simply enter your Githu
 
 ## Getting Started
 
-Fork or clone the repo from here to get started if running locally. Otherwise, navigate to [the official website](gitget.now.sh).
+Fork or clone the repo from here to get started if running locally. Otherwise, navigate to [the official website](https://gitget.now.sh).
 
 ### Prerequisites
 
