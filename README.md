@@ -28,9 +28,8 @@ To view the full online version, look at [gitget.now.sh](gitget.now.sh).
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [React](https://reactjs.org/) - The web framework used
+* [Yarn](https://classic.yarnpkg.com/lang/en/) - Dependency Management
 
 ## Contributing
 
