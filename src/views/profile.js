@@ -13,25 +13,14 @@ const Profile = (props) => {
         ).then (
             json => {
                 setUser(json)
-                console.log(user)
             }
         ).catch((e) => {
             console.error(e);
         })
     }
 
-    // const fetchRateLimit = () => {
-    //     fetch(`https://api.github.com/rate_limit`, {method: "GET", headers: {'Content-Type': 'application/json'}}
-    //     ).then(
-    //         (lim => lim.json())
-    //     ).then(
-    //         json => console.log(json)
-    //     ).catch((e) => {
-    //         console.error(e);
-    //     })
-    // }
-
-    useEffect(() => fetchUser(props.username))
+    useEffect(() => fetchUser(props.username), [props.username])
+    useEffect(() => console.log(user), [user])
 
     return (
         <div className="App">
