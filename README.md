@@ -24,7 +24,7 @@ and navigate to `localhost:3000`.
 
 ## Deployment
 
-To view the full online version, look at [gitget.now.sh](gitget.now.sh).
+To view the full online version, look at [gitget.now.sh](https://gitget.now.sh).
 
 ## Built With
 
