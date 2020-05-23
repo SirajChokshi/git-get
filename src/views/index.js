@@ -1,7 +1,9 @@
 import React from 'react';
 import logo from '../logo.svg';
+import {getUser} from "../static/people";
 
 const Index = () => {
+    console.log(getUser('daviskeene'));
     return (
         <div className="App">
             <header className="App-header">
