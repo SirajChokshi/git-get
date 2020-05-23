@@ -1,17 +1,7 @@
 import React, {useState, useEffect} from "react";
 import logo from '../logo.svg';
-import {getUser} from "../static/people";
 
 const Index = () => {
-    const [user, setUser] = useState()
-
-    useEffect(() => {
-        getUser('daviskeene').then(
-            (value => {
-                setUser(value)
-            }), user
-        )
-    })
 
     return (
         <div className="App">

@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Index path="/" />
       <Profile path="/:username" />
-      <Error default />
+      <Error path="/404" default />
     </Router>
   );
 }
