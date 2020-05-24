@@ -24,7 +24,10 @@ const Profile = (props) => {
         })
     }
 
-    useEffect(() => fetchUser(props.username), [props.username])
+    useEffect(() => {
+        setUser({loading: true})
+        fetchUser(props.username)
+    }, [props.username])
     useEffect(() => console.log(user), [user])
 
     return (
