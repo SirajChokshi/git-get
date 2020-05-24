@@ -34,11 +34,17 @@ const Profile = (props) => {
                     ?
                     <FaSpinner size={"1.3em"} className={"spin-icon"} />
                     :
-                    <Bio
-                        avatar={user["avatar_url"]}
-                        username={user.login}
-                        bio={user.bio}
-                    />
+                    (
+                        user.message
+                        ?
+                            <h1>Error -- Not Found</h1>
+                        :
+                        <Bio
+                            avatar={user["avatar_url"]}
+                            username={user.login}
+                            bio={user.bio}
+                        />
+                    )
                 }
             </header>
         </div>
