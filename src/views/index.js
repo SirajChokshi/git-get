@@ -1,23 +1,17 @@
 import React, {useState, useEffect} from "react";
+import {Link} from '@reach/router'
 import logo from '../logo.svg';
 
 const Index = () => {
 
+    const [query, updateQuery] = useState("")
+
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Davis is cool B)
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
+                <h1>Search for a GitHub user or organization:</h1>
+                <input style={{fontSize: "24px"}} onChange={(e) => updateQuery(e.target.value)} />
+                <Link to={`/${query}`}>Submit</Link>
             </header>
         </div>
     );
