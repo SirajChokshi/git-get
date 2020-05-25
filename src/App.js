@@ -8,11 +8,13 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
-      <Index path="/" />
-      <Profile path="/:username" />
-      <Error path="/404" default />
-    </Router>
+      <div className="container">
+        <Router>
+          <Index path="/" />
+          <Profile path="/:username" />
+          <Error path="/404" default />
+        </Router>
+      </div>
   );
 }
 

@@ -2,9 +2,19 @@
 /*  text-align: center;*/
 /*}*/
 
+html, body {
+  background-color: #282c34;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.container {
+  margin: 0 auto;
+  width: 95%;
+  max-width: 1024px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -14,7 +24,6 @@
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
