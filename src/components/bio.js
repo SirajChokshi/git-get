@@ -46,7 +46,13 @@ const Bio = (props) => {
                                 <tr>
                                     <td>Website</td>
                                     <td>
-                                        <a href={props.user.blog} target={"_blank"} rel={"noopener"}>{props.user.blog}</a>
+                                        {
+                                            (props.user.blog).match(/^(http|https):\/\//)
+                                                ?
+                                                <a href={props.user.blog} target={"_blank"} rel={"noopener"}>{props.user.blog}</a>
+                                                :
+                                                <a href={"http://" + props.user.blog} target={"_blank"} rel={"noopener"}>{props.user.blog}</a>
+                                        }
                                     </td>
                                 </tr>
                             )
