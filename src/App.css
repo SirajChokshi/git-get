@@ -4,6 +4,8 @@
 
 html, body {
   background-color: #282c34;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-logo {
@@ -14,23 +16,13 @@ html, body {
 .container {
   margin: 0 auto;
   width: 95%;
-  max-width: 1024px;
+  max-width: 1160px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo, .spin-icon {
     animation: App-logo-spin infinite 2s linear;
   }
-}
-
-.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {

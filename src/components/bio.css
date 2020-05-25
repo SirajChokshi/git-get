@@ -4,6 +4,12 @@ header#bio {
     grid-template-rows: 1fr;
     grid-column-gap: 0;
     grid-row-gap: 0;
+    /* bio styling */
+    box-sizing: border-box;
+    padding: 0.5em;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.2);
+    margin-top: 1em;
 }
 
 #bio-info {
@@ -12,7 +18,7 @@ header#bio {
 #avatar {
     grid-area: 1 / 1 / 2 / 2;
     box-sizing: border-box;
-    padding: 0 1em 2em 1em;
+    padding-right: 1em;
     position: relative;
     width: 100%;
 }
@@ -29,15 +35,51 @@ header#bio {
     margin: 0;
 }
 
+#bio-info h2 {
+    font-size: 28px;
+}
+
 #bio-info h3 {
+    font-size: 22px;
     opacity: 0.6;
 }
 
 #bio-info p {
+    font-size: 20px;
     margin: 0.5em 0;
 }
 
 #bio-info a {
     color: aquamarine;
     text-decoration: none;
+}
+
+table {
+    font-size: 16px;
+    border: none;
+    border-image-width: 0;
+}
+
+td:nth-child(1) {
+    opacity: 0.6;
+    padding-right: 20px;
+}
+
+#extra-bio-info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.badge {
+    display: inline-block;
+    text-align: right;
+    font-size: 16px;
+    margin-left: 15px;
+}
+
+.badge .num  {
+    font-size: 24px;
+    font-weight: 600;
+    color: aquamarine;
 }
