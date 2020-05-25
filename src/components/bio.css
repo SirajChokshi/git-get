@@ -1,0 +1,43 @@
+header#bio {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+}
+
+#bio-info {
+    grid-area: 1 / 2 / 2 / 4;
+}
+#avatar {
+    grid-area: 1 / 1 / 2 / 2;
+    box-sizing: border-box;
+    padding: 0 1em 2em 1em;
+    position: relative;
+    width: 100%;
+}
+
+#avatar img {
+    width: 100%;
+}
+
+#extra-bio-info {
+    grid-area: 1 / 4 / 2 / 5;
+}
+
+#bio-info h2, h3 {
+    margin: 0;
+}
+
+#bio-info h3 {
+    opacity: 0.6;
+}
+
+#bio-info p {
+    margin: 0.5em 0;
+}
+
+#bio-info a {
+    color: aquamarine;
+    text-decoration: none;
+}

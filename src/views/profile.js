@@ -43,9 +43,7 @@ const Profile = (props) => {
                             <h1>Error -- Not Found</h1>
                         :
                         <Bio
-                            avatar={user["avatar_url"]}
-                            username={user.login}
-                            bio={user.bio}
+                            user={user}
                         />
                     )
                 }
