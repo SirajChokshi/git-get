@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-
-	"google.golang.org/api/iterator"
+	"strings"
 
 	"cloud.google.com/go/firestore"
 )
@@ -29,7 +29,16 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello, World!")
 }
 
-func test(w http.ResponseWriter, r *http.Request) {
+type Data struct {
+	User *User `json:"user"`
+}
+
+type User struct {
+	Object string `json:"data"`
+}
+
+func get(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	// Make the app context and client
 	ctx := context.Background()
 	client := createClient(ctx)
@@ -37,32 +46,35 @@ func test(w http.ResponseWriter, r *http.Request) {
 	defer client.Close()
 
 	// Add data
-	_, _, err := client.Collection("users").Add(ctx, map[string]interface{}{
-		"first": "Ada",
-		"last":  "Lovelace",
-		"born":  1815,
-	})
-	// If there's any error, log it.
-	if err != nil {
-		log.Fatalf("Failed adding alovelace: %v", err)
+	//_, _, err := client.Collection("users").Add(ctx, map[string]interface{}{
+	//	"first": "Ada",
+	//	"last":  "Lovelace",
+	//	"born":  1815,
+	//})
+	//// If there's any error, log it.
+	//if err != nil {
+	//	log.Fatalf("Failed adding alovelace: %v", err)
+	//}
+
+	url := r.RequestURI
+	// Get the name from the string
+	params := strings.Split(url, "/")
+	if params[2] != "" {
+		// Get user from firestore
+		doc, _ := client.Collection("users").Doc(params[2]).Get(ctx)
+
+		// Encode the response as JSON
+		enc := json.NewEncoder(w)
+		enc.Encode(doc.Data())
+	} else {
+		json.NewEncoder(w).Encode(map[string]interface{}{"user": nil})
 	}
-	// Get all users from firestore
-	iter := client.Collection("users").Documents(ctx)
-	for {
-		doc, err := iter.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			log.Fatalf("Failed to iterate: %v", err)
-		}
-		fmt.Println(doc.Data())
-	}
+
 }
 
 func handleRequest() {
 	http.HandleFunc("/", homePage)
-	http.HandleFunc("/test", test)
+	http.HandleFunc("/get/", get)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
