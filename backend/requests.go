@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/machinebox/graphql"
@@ -80,7 +79,7 @@ func makeRequest(username string) interface{} {
 	return graphqlResponse
 }
 
-func getRateLimit() {
+func getRemainingRequests() int {
 	graphqlClient := graphql.NewClient(API_URL)
 	graphqlRequest := graphql.NewRequest(`
         query {
@@ -90,14 +89,16 @@ func getRateLimit() {
         }
 	`)
 
+	type response map[string]map[string]int
+
 	// Set Authorization Header
 	graphqlRequest.Header.Set("Authorization", "Bearer "+os.Getenv("GIT_GET_TOKEN"))
-	var graphqlResponse interface{}
+	var graphqlResponse response
 	if err := graphqlClient.Run(context.Background(), graphqlRequest, &graphqlResponse); err != nil {
 		panic(err)
 	}
 
-	fmt.Println(graphqlResponse)
+	return graphqlResponse["rateLimit"]["remaining"]
 }
 
 // TODO: Implement Collaborators Query (Throws Error in current query)

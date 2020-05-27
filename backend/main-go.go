@@ -79,7 +79,7 @@ func handleRequest() {
 }
 
 func main() {
-	getRateLimit()
+	fmt.Println(getRemainingRequests())
 	fmt.Println(makeRequest("daviskeene"))
 	handleRequest()
 }
