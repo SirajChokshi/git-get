@@ -25,9 +25,9 @@ func makeRequest(username string) interface{} {
 		company       string
 		bio           string
 		email         string
-		organizations map[string]map[string]string
+		organizations map[string][]string
 		repositories  struct {
-			nodes struct {
+			nodes []struct {
 				name            string
 				primaryLanguage map[string]string
 				languages       map[string]struct {
