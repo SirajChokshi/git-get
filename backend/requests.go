@@ -14,25 +14,31 @@ func makeRequest(username string) interface{} {
 
 	graphqlClient := graphql.NewClient(API_URL)
 
-	type User struct {
-		name          string
-		avatarUrl     string
-		websiteUrl    string
-		followers     map[string]int
-		following     map[string]int
-		location      string
-		createdAt     string
-		company       string
-		bio           string
-		email         string
-		organizations map[string][]string
-		repositories  struct {
-			nodes []struct {
-				name            string
-				primaryLanguage map[string]string
-				languages       map[string]struct {
-					size string
-					node map[string]string
+	type Response struct {
+		User struct {
+			Name          string `json:"name"`
+			AvatarURL     string `json:"avatarUrl"`
+			WebsiteURL    string `json:"websiteUrl"`
+			Followers     map[string]int
+			Following     map[string]int
+			Location      string `json:"location"`
+			CreatedAt     string `json:"createdAt"`
+			Company       string `json:"company"`
+			Bio           string `json:"bio"`
+			Email         string `json:"email"`
+			Organizations struct {
+				Nodes []struct {
+					Login string `json:"login"`
+				}
+			}
+			Repositories struct {
+				Nodes []struct {
+					Name            string
+					PrimaryLanguage map[string]string
+					Languages       map[string][]struct {
+						Size int
+						Node map[string]string
+					}
 				}
 			}
 		}
@@ -79,14 +85,14 @@ func makeRequest(username string) interface{} {
 					  },
 					  languages(first: 6) {
 						edges {
-						  size,
-						  node {
-							name
-						  }
+							size,
+							node {
+								name
+						  	}
 						}
 					  },
 					}
-				  }
+				}
             }
         }
 	`)
@@ -94,7 +100,7 @@ func makeRequest(username string) interface{} {
 	// Set Authorization Header
 	graphqlRequest.Header.Set("Authorization", "Bearer "+os.Getenv("GIT_GET_TOKEN"))
 
-	var graphqlResponse User
+	var graphqlResponse Response
 
 	if err := graphqlClient.Run(context.Background(), graphqlRequest, &graphqlResponse); err != nil {
 		panic(err)
