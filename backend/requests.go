@@ -14,6 +14,30 @@ func makeRequest(username string) interface{} {
 
 	graphqlClient := graphql.NewClient(API_URL)
 
+	type User struct {
+		name          string
+		avatarUrl     string
+		websiteUrl    string
+		followers     map[string]int
+		following     map[string]int
+		location      string
+		createdAt     string
+		company       string
+		bio           string
+		email         string
+		organizations map[string]map[string]string
+		repositories  struct {
+			nodes struct {
+				name            string
+				primaryLanguage map[string]string
+				languages       map[string]struct {
+					size string
+					node map[string]string
+				}
+			}
+		}
+	}
+
 	/*
 	 *	Queries:
 	 *	- User profile information
@@ -70,7 +94,7 @@ func makeRequest(username string) interface{} {
 	// Set Authorization Header
 	graphqlRequest.Header.Set("Authorization", "Bearer "+os.Getenv("GIT_GET_TOKEN"))
 
-	var graphqlResponse interface{}
+	var graphqlResponse User
 
 	if err := graphqlClient.Run(context.Background(), graphqlRequest, &graphqlResponse); err != nil {
 		panic(err)
@@ -79,6 +103,10 @@ func makeRequest(username string) interface{} {
 	return graphqlResponse
 }
 
+/*
+ *	returns the number of requests remaining on the token as an integer, on error returns -1
+ *	note this endpoint does not count against the rate limit
+ */
 func getRemainingRequests() int {
 	graphqlClient := graphql.NewClient(API_URL)
 	graphqlRequest := graphql.NewRequest(`
@@ -95,13 +123,13 @@ func getRemainingRequests() int {
 	graphqlRequest.Header.Set("Authorization", "Bearer "+os.Getenv("GIT_GET_TOKEN"))
 	var graphqlResponse response
 	if err := graphqlClient.Run(context.Background(), graphqlRequest, &graphqlResponse); err != nil {
-		panic(err)
+		return -1
 	}
 
 	return graphqlResponse["rateLimit"]["remaining"]
 }
 
-// TODO: Implement Collaborators Query (Throws Error in current query)
+//TODO: Implement Collaborators Query with Github REST v3 API
 // collaborators(first: 10, affiliation: ALL) {
 // 	edges {
 // 	  node {
