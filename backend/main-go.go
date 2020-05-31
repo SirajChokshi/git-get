@@ -80,6 +80,6 @@ func handleRequest() {
 
 func main() {
 	fmt.Println(getRemainingRequests())
-	fmt.Println(makeRequest("daviskeene"))
+	makeRequest("daviskeene")
 	handleRequest()
 }
