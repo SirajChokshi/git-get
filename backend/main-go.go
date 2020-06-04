@@ -75,11 +75,11 @@ func get(w http.ResponseWriter, r *http.Request) {
 func handleRequest() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/get/", get)
+	http.HandleFunc("/ratelimit/", getRemainingRequests)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func main() {
-	fmt.Println(getRemainingRequests())
 	makeRequest("daviskeene")
 	handleRequest()
 }
