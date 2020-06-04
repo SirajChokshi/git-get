@@ -11,12 +11,13 @@ const Profile = (props) => {
     const [user, setUser] = useState({loading: true})
 
     const fetchUser = (username) => {
-        fetch(`https://api.github.com/users/${username}?client_id=${client_id}&client_secret=${client_secret}`,
+        fetch(`http://localhost:8080/get/${username}`,
             {method: "GET", headers: {'Content-Type': 'application/json'}}
         ).then(
             (userData => userData.json())
         ).then (
             json => {
+                json.Login = username;
                 setUser(json)
             }
         ).catch((e) => {

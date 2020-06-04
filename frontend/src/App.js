@@ -4,6 +4,7 @@ import { Router } from '@reach/router'
 import Index from './views/index'
 import Profile from './views/profile'
 import Error from './views/error'
+import RateLimit from './components/rateLimit'
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Profile path="/:username" />
           <Error path="/404" default />
         </Router>
+        <RateLimit />
       </div>
   );
 }

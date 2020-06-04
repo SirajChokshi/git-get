@@ -7,13 +7,13 @@ const Bio = (props) => {
 
     return (
         <header id={"bio"}>
-                <img src={props.user.avatar_url} id={"avatar"} />
+                <img src={props.user.AvatarURL} id={"avatar"} />
                 <div id={"bio-info"}>
-                    <h2>{props.user.name}</h2>
-                    <h3>@{props.user.login}</h3>
+                    <h2>{props.user.Name}</h2>
+                    <h3>@{props.user.Login}</h3>
                     <p>
                         {
-                            reactStringReplace(props.user.bio, /\B@([\w-]+)/gm, (match, i) => (
+                            reactStringReplace(props.user.Bio, /\B@([\w-]+)/gm, (match, i) => (
                                 <Link key={i} to={`/${match}`} >@{match}</Link>
                             ))
                         }
@@ -23,7 +23,7 @@ const Bio = (props) => {
                             props.user.location && (
                                 <tr>
                                     <td>Location</td>
-                                    <td>{props.user.location}</td>
+                                    <td>{props.user.Location}</td>
                                 </tr>
                             )
                         }
@@ -33,7 +33,7 @@ const Bio = (props) => {
                                     <td>Company</td>
                                     <td>
                                         {
-                                            reactStringReplace(props.user.company, /\B@([\w-]+)/gm, (match, i) => (
+                                            reactStringReplace(props.user.Company, /\B@([\w-]+)/gm, (match, i) => (
                                                 <Link key={i} to={`/${match}`} >@{match}</Link>
                                             ))
                                         }
@@ -47,11 +47,11 @@ const Bio = (props) => {
                                     <td>Website</td>
                                     <td>
                                         {
-                                            (props.user.blog).match(/^(http|https):\/\//)
+                                            (props.user.WebsiteURL).match(/^(http|https):\/\//)
                                                 ?
-                                                <a href={props.user.blog} target={"_blank"} rel={"noopener"}>{props.user.blog}</a>
+                                                <a href={props.user.WebsiteURL} target={"_blank"} rel={"noopener"}>{props.user.WebsiteURL}</a>
                                                 :
-                                                <a href={"http://" + props.user.blog} target={"_blank"} rel={"noopener"}>{props.user.blog}</a>
+                                                <a href={"http://" + props.user.WebsiteURL} target={"_blank"} rel={"noopener"}>{props.user.WebsiteURL}</a>
                                         }
                                     </td>
                                 </tr>
@@ -67,11 +67,11 @@ const Bio = (props) => {
                         :
                         <>
                             <div className="badge">
-                                <div className="num">{props.user.followers}</div>
-                                Following
+                                <div className="num">{props.user.Followers}</div>
+                                Followers
                             </div>
                             <div className="badge">
-                                <div className="num">{props.user.following}</div>
+                                <div className="num">{props.user.Following}</div>
                                 Following
                             </div>
                         </>
