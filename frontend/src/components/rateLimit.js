@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
+import {FaSpinner} from 'react-icons/fa'
 import './rateLimit.css'
 
 const RateLimit = (props) => {
 
-    const [rateLimit, setRateLimit] = useState(-1)
+    const [rateLimit, setRateLimit] = useState({loading: true})
 
     const fetchRateLimit = () => {
         fetch(`http://localhost:8080/ratelimit/`,
@@ -25,9 +26,21 @@ const RateLimit = (props) => {
 
     return (
         <div id="rate-limit">
-            <span>{rateLimit}</span>
-            <span>Remaining</span>
-            Requests
+        {rateLimit.loading
+                    ?
+                    <>
+                        <span><FaSpinner size={"1.3em"} className={"spin-icon"} /></span>
+                        <span>Loading...</span>
+                    </>
+                    :
+                    (
+                        <>
+                        <span>{rateLimit}</span>
+                        <span>Remaining</span>
+                        Requests
+                        </>
+                    )
+                }
         </div>
     );
 }
