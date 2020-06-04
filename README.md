@@ -1,6 +1,6 @@
 # Git Get
 
-Git Get is a simple to use Github Profile Analysis tool. Simply enter your Github username, and we can tell you what kind of developer you are. Statistis include favorite languages, linked PR's, average coding days and organization information.
+Git Get is a simple to use Github Profile Analysis tool. Simply enter your Github username, and we can tell you what kind of developer you are. Statistics include favorite languages, linked PR's, average coding days, and organization information.
 
 ## Getting Started
 
@@ -28,7 +28,9 @@ To view the full online version, look at [gitget.now.sh](https://gitget.now.sh).
 
 ## Built With
 
-* [React](https://reactjs.org/) - The web framework used
+* [React](https://reactjs.org/) - The Web Framework Used
+* [Go](https://golang.org) - For API Development
+* [Firebase](https://firebase.google.com/) - Storage and Caching
 * [Yarn](https://classic.yarnpkg.com/lang/en/) - Dependency Management
 
 ## Contributing
