@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"cloud.google.com/go/firestore"
 )
@@ -44,7 +45,6 @@ func get(w http.ResponseWriter, r *http.Request) {
 	client := createClient(ctx)
 	// Close client on application end
 	defer client.Close()
-
 	// Add data
 	//_, _, err := client.Collection("users").Add(ctx, map[string]interface{}{
 	//	"first": "Ada",
@@ -59,13 +59,39 @@ func get(w http.ResponseWriter, r *http.Request) {
 	url := r.RequestURI
 	// Get the name from the string
 	params := strings.Split(url, "/")
+	userRef := client.Collection("users")
 	if params[2] != "" {
 		// Get user from firestore
-		doc, _ := client.Collection("users").Doc(params[2]).Get(ctx)
-
-		// Encode the response as JSON
-		enc := json.NewEncoder(w)
-		enc.Encode(doc.Data())
+		doc, _ := userRef.Doc(params[2]).Get(ctx)
+		if doc.Data() == nil {
+			// No user exists in firebase, make new one.
+			println("Creating user %s", params[2])
+			jsonUser := makeRequest(params[2])
+			// The Set() command either creates a user or updates the user.
+			_, err := userRef.Doc(params[2]).Set(ctx, jsonUser)
+			// Handle the error
+			if err != nil {
+				log.Fatalf("Failed to add user: %s", params[2])
+			} else {
+				json.NewEncoder(w).Encode(jsonUser)
+			}
+		} else {
+			// Check the last updated timestamp
+			lastUpdated := doc.UpdateTime
+			if lastUpdated.Sub(time.Now()).Hours() <= 6 {
+				json.NewEncoder(w).Encode(doc.Data())
+			} else {
+				// Make the request if they haven't been updated in 6 hours
+				println("Updating user %s, last update: %s", params[2], lastUpdated.String())
+				jsonUser := makeRequest(params[2])
+				_, err := userRef.Doc(params[2]).Set(ctx, jsonUser)
+				if err != nil {
+					log.Fatalf("Failed to add user: %s", params[2])
+				} else {
+					json.NewEncoder(w).Encode(map[string]interface{}{"response": jsonUser})
+				}
+			}
+		}
 	} else {
 		json.NewEncoder(w).Encode(map[string]interface{}{"user": nil})
 	}
@@ -80,6 +106,5 @@ func handleRequest() {
 }
 
 func main() {
-	makeRequest("daviskeene")
 	handleRequest()
 }

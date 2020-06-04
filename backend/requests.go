@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/machinebox/graphql"
@@ -190,7 +192,7 @@ func formatUser(Data *Response) *JSONUser {
  *	returns the number of requests remaining on the token as an integer, on error returns -1
  *	note this endpoint does not count against the rate limit
  */
-func getRemainingRequests() int {
+func getRemainingRequests(w http.ResponseWriter, r *http.Request) {
 	graphqlClient := graphql.NewClient(API_URL)
 	graphqlRequest := graphql.NewRequest(`
         query {
@@ -206,10 +208,9 @@ func getRemainingRequests() int {
 	graphqlRequest.Header.Set("Authorization", "Bearer "+os.Getenv("GIT_GET_TOKEN"))
 	var graphqlResponse response
 	if err := graphqlClient.Run(context.Background(), graphqlRequest, &graphqlResponse); err != nil {
-		return -1
+		json.NewEncoder(w).Encode(map[string]interface{}{"requests": 0})
 	}
-
-	return graphqlResponse["rateLimit"]["remaining"]
+	json.NewEncoder(w).Encode(map[string]interface{}{"requests": graphqlResponse["rateLimit"]["remaining"]})
 }
 
 //TODO: Implement Collaborators Query with Github REST v3 API
