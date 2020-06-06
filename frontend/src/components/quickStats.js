@@ -2,58 +2,9 @@ import React, {useState, useEffect} from "react";
 import { Doughnut, Pie } from 'react-chartjs-2';
 import colors from '../static/colors'
 import './quickStats.css'
-import {Link} from '@reach/router'
 
 const QuickStats = (props) => {
-
-    const [mostLines, setMostLines] = useState({loading: true})
-
-    const getHighestLineCount = (repos) => {
-        let languageCounts = {}
-        for (const repo of repos) {
-            for (const lang in repo.Languages) {
-                if (languageCounts[lang]) {
-                    languageCounts[lang] += repo.Languages[lang]
-                } else {
-                    languageCounts[lang] = repo.Languages[lang]
-                }
-            }
-        }
-
-        var sorted = [];
-        for (const lang in languageCounts) {
-            sorted.push([lang, languageCounts[lang]]);
-        }
-
-        sorted.sort(function(a, b) {
-            return b[1] - a[1];
-        });
-
-        sorted = sorted.slice(0,10)
-
-        let lines = [], names = [], backgrounds = []
-        for (const tuple of sorted) {
-            names.push(tuple[0])
-            lines.push(tuple[1])
-            if (colors[tuple[0]]) {
-                backgrounds.push(colors[tuple[0]].color)
-            } else backgrounds.push("#333333")
-        }
-
-        const data = {
-            labels: names,
-            datasets: [{
-                data: lines,
-                backgroundColor: backgrounds,
-                hoverBackgroundColor: backgrounds,
-            }]
-        };
-
-        setMostLines(data);
-    }
-
-    useEffect(() => getHighestLineCount(props.user.Repositories), [props.user.Login])
-
+    
     const [mainLanguages, setMainLanguages] = useState({loading: true})
 
     const getMainLanguages = (repos) => {
@@ -118,23 +69,7 @@ const QuickStats = (props) => {
                         />
                 }
             </div>
-            <div>
-            {/* {
-                mostLines.loading 
-                ?
-                    <>Loading...</>
-                :
-                    <Doughnut data={mostLines} legend={{position: 'left'}} />
-            } */}
-
-            {/* <ul>
-                        {
-                            mostLines.slice(0,5).map(lang => (
-                                <li key={lang}>{lang[0]}</li>
-                            ))
-                        }
-                    </ul> */}
-            </div>
+            <div></div>
             <div></div>
         </section>
     );
