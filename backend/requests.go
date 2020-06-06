@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 
@@ -28,23 +27,59 @@ type Response struct {
 		Email         string `json:"email"`
 		Organizations struct {
 			Nodes []struct {
-				Login string `json:"login"`
+				Login     string `json:"login"`
+				AvatarURL string `json:"avatarUrl"`
 			}
 		}
 		Repositories struct {
 			Nodes []struct {
-				Name            string
-				PrimaryLanguage map[string]string
-				Languages       struct {
+				Object struct {
+					History struct {
+						TotalCount int `json:"totalCount"`
+						Nodes      []struct {
+							Author struct {
+								User struct {
+									Login string `json:"login"`
+								} `json:"user"`
+							} `json:"author"`
+						} `json:"nodes"`
+					} `json:"history"`
+				} `json:"object"`
+				Name       string `json:"name"`
+				Stargazers struct {
+					TotalCount int `json:"totalCount"`
+				} `json:"stargazers"`
+				PrimaryLanguage struct {
+					Name string `json:"name"`
+				} `json:"primaryLanguage"`
+				Languages struct {
 					Edges []struct {
-						Size int
+						Size int `json:"size"`
 						Node struct {
-							Name string
-						}
-					}
-				}
-			}
-		}
+							Name string `json:"name"`
+						} `json:"node"`
+					} `json:"edges"`
+				} `json:"languages"`
+			} `json:"nodes"`
+		} `json:"repositories"`
+		ContributionsCollection struct {
+			ContributionCalendar struct {
+				TotalContributions int `json:"totalContributions"`
+				Weeks              []struct {
+					ContributionDays []struct {
+						ContributionCount int    `json:"contributionCount"`
+						Date              string `json:"date"`
+						Weekday           int    `json:"weekday"`
+					} `json:"contributionDays"`
+				} `json:"weeks"`
+			} `json:"contributionCalendar"`
+			PullRequestReviewContributions struct {
+				TotalCount int `json:"totalCount"`
+			} `json:"pullRequestReviewContributions"`
+			PullRequestContributions struct {
+				TotalCount int `json:"totalCount"`
+			} `json:"pullRequestContributions"`
+		} `json:"contributionsCollection"`
 	}
 }
 
@@ -53,22 +88,36 @@ type Repository struct {
 	Name            string
 	PrimaryLanguage string
 	Languages       map[string]int
+	Commits         int
+	Collaborators   []string
+	Stars           int
+}
+
+// Day ...
+type Day struct {
+	Count   int
+	Date    string
+	Weekday int
 }
 
 // JSONUser ... type to easily access user data after a request
 type JSONUser struct {
-	Name          string
-	AvatarURL     string
-	WebsiteURL    string
-	Followers     int
-	Following     int
-	Location      string
-	CreatedAt     string
-	Company       string
-	Bio           string
-	Email         string
-	Organizations []string
-	Repositories  []Repository
+	Name                 string
+	AvatarURL            string
+	WebsiteURL           string
+	Followers            int
+	Following            int
+	Location             string
+	CreatedAt            string
+	Company              string
+	Bio                  string
+	Email                string
+	Organizations        []string
+	Repositories         []Repository
+	TotalContributions   int
+	CommitsPerDay        []Day
+	PullRequestsMade     int
+	PullRequestsReviewed int
 }
 
 func makeRequest(username string) *JSONUser {
@@ -79,53 +128,98 @@ func makeRequest(username string) *JSONUser {
 	 *	Queries:
 	 *	- User profile information
 	 *	- 6 Organizations
+	 *		- Logins
+	 *		- avatarURL
 	 *	- 50 Repositories
+	 *		- Number of Commits
 	 * 		- Most Used language
 	 *		- 6 Languages
-	 *		- 20 Collaborators
-	 *	-
+	 *		- Last 50 commit authors
+	 *		- Number of Stars
+	 *	- User Contributions
+	 *		- Number of Contributions
+	 *		- Commits per Day (of Week)
+	 *		- Number of PRs Reviewed
+	 *		- Number of PRs Made
 	 */
 
 	graphqlRequest := graphql.NewRequest(`
         query {
             user(login: "` + username + `") {
-				name,
-				avatarUrl,
-				websiteUrl,
+				name
+				avatarUrl
+				websiteUrl
 				followers {
-					totalCount
-				},
-				following {
-					totalCount
-				},
-				location,
-				createdAt,
-				company,
-				bio,
-				email,
-				organizations (first: 6) {
-					nodes {
-						login
-					}
-				},
-				repositories(first: 50) {
-					nodes {
-					  name,
-					  primaryLanguage {
-						name
-					  },
-					  languages(first: 6) {
-						edges {
-							size,
-							node {
-								name
-						  	}
-						}
-					  },
-					}
+				  totalCount
 				}
-            }
-        }
+				following {
+				  totalCount
+				}
+				location
+				createdAt
+				company
+				bio
+				email
+				organizations(first: 6) {
+				  nodes {
+					login
+					avatarUrl
+				  }
+				}
+				repositories(first: 100) {
+				  nodes {
+					object(expression: "master") {
+					  ... on Commit {
+						history(first: 100) {
+						  totalCount
+						  nodes {
+							author {
+							  user {
+								login
+							  }
+							}
+						  }
+						}
+					  }
+					}
+					name
+					stargazers {
+					  totalCount
+					}
+					primaryLanguage {
+					  name
+					}
+					languages(first: 6) {
+					  edges {
+						size
+						node {
+						  name
+						}
+					  }
+					}
+				  }
+				}
+				contributionsCollection {
+					contributionCalendar {
+					  totalContributions
+					  weeks {
+						contributionDays {
+						  contributionCount
+						  date
+						  weekday
+						}
+					  }
+					}
+					pullRequestReviewContributions {
+					  totalCount
+					}
+					pullRequestContributions {
+					  totalCount
+					}
+				  }
+			  }
+			}
+			
 	`)
 
 	// Set Authorization Header
@@ -136,6 +230,8 @@ func makeRequest(username string) *JSONUser {
 	if err := graphqlClient.Run(context.Background(), graphqlRequest, &graphqlResponse); err != nil {
 		panic(err)
 	}
+
+	// fmt.Println(graphqlResponse)
 
 	return formatUser(&graphqlResponse)
 }
@@ -155,7 +251,7 @@ func formatUser(Data *Response) *JSONUser {
 		var out Repository
 
 		out.Name = repo.Name
-		out.PrimaryLanguage = repo.PrimaryLanguage["name"]
+		out.PrimaryLanguage = repo.PrimaryLanguage.Name
 
 		languages := make(map[string]int)
 
@@ -165,25 +261,58 @@ func formatUser(Data *Response) *JSONUser {
 
 		out.Languages = languages
 
+		out.Commits = repo.Object.History.TotalCount
+
+		contributors := make(map[string]bool)
+
+		for _, node := range repo.Object.History.Nodes {
+			contributors[node.Author.User.Login] = true
+		}
+
+		var collaborators []string
+
+		for username := range contributors {
+			collaborators = append(collaborators, username)
+		}
+
+		out.Collaborators = collaborators
+		out.Stars = repo.Stargazers.TotalCount
+
 		repos = append(repos, out)
 	}
 
-	formattedUser := JSONUser{
-		Name:          res.Name,
-		AvatarURL:     res.AvatarURL,
-		WebsiteURL:    res.WebsiteURL,
-		Followers:     res.Followers["totalCount"],
-		Following:     res.Following["totalCount"],
-		Location:      res.Location,
-		CreatedAt:     res.CreatedAt,
-		Company:       res.Company,
-		Bio:           res.Bio,
-		Email:         res.Email,
-		Organizations: organizations,
-		Repositories:  repos,
+	var days []Day
+
+	for _, weeks := range res.ContributionsCollection.ContributionCalendar.Weeks {
+		for _, day := range weeks.ContributionDays {
+			var current Day
+			current.Date = day.Date
+			current.Weekday = day.Weekday
+			current.Count = day.ContributionCount
+			days = append(days, current)
+		}
 	}
 
-	fmt.Println(formattedUser)
+	formattedUser := JSONUser{
+		Name:                 res.Name,
+		AvatarURL:            res.AvatarURL,
+		WebsiteURL:           res.WebsiteURL,
+		Followers:            res.Followers["totalCount"],
+		Following:            res.Following["totalCount"],
+		Location:             res.Location,
+		CreatedAt:            res.CreatedAt,
+		Company:              res.Company,
+		Bio:                  res.Bio,
+		Email:                res.Email,
+		Organizations:        organizations,
+		Repositories:         repos,
+		CommitsPerDay:        days,
+		TotalContributions:   res.ContributionsCollection.ContributionCalendar.TotalContributions,
+		PullRequestsMade:     res.ContributionsCollection.PullRequestContributions.TotalCount,
+		PullRequestsReviewed: res.ContributionsCollection.PullRequestReviewContributions.TotalCount,
+	}
+
+	// fmt.Println(formattedUser)
 
 	return &formattedUser
 }
@@ -212,13 +341,3 @@ func getRemainingRequests(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(map[string]interface{}{"requests": graphqlResponse["rateLimit"]["remaining"]})
 }
-
-//TODO: Implement Collaborators Query with Github REST v3 API
-// collaborators(first: 10, affiliation: ALL) {
-// 	edges {
-// 	  node {
-// 		  login,
-// 		  avatarUrl
-// 		}
-// 	}
-// }
