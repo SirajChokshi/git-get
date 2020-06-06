@@ -20,7 +20,7 @@ const Bio = (props) => {
                     </p>
                     <table>
                         {
-                            props.user.location && (
+                            props.user.Location && (
                                 <tr>
                                     <td>Location</td>
                                     <td>{props.user.Location}</td>
@@ -28,7 +28,7 @@ const Bio = (props) => {
                             )
                         }
                         {
-                            props.user.company && (
+                            props.user.Company && (
                                 <tr>
                                     <td>Company</td>
                                     <td>
@@ -42,7 +42,7 @@ const Bio = (props) => {
                             )
                         }
                         {
-                            props.user.blog && (
+                            props.user.WebsiteURL && (
                                 <tr>
                                     <td>Website</td>
                                     <td>
@@ -66,6 +66,10 @@ const Bio = (props) => {
                            <></>
                         :
                         <>
+                        <div className="badge">
+                            <div className="num">{props.user.Repositories.length >= 50 ? "50+" : props.user.Repositories.length}</div>
+                                Repos
+                            </div>
                             <div className="badge">
                                 <div className="num">{props.user.Followers}</div>
                                 Followers

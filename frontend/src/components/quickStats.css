@@ -1,0 +1,19 @@
+#stats {
+    display: flex;
+    margin: 0 -5px;
+    margin-top: 10px;
+}
+
+#stats div {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 0.5em;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.2);
+    margin-top: 1em;
+    margin: 0 5px;
+}
+
+h3 {
+    font-size: 20px;
+}

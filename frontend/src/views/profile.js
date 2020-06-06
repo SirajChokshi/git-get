@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Link, Redirect } from '@reach/router';
 import {FaSpinner} from 'react-icons/fa'
 import Bio from "../components/bio";
+import QuickStats from "../components/quickStats"
 
 const client_id = `Iv1.82a68fd3b00d5cab`
 const client_secret = `b6b9b2b580c0dfc25499d34d4e4fc9d4f33f0ce2`
@@ -43,9 +44,14 @@ const Profile = (props) => {
                         ?
                             <h1>Error -- Not Found</h1>
                         :
-                        <Bio
-                            user={user}
-                        />
+                        <>
+                            <Bio
+                                user={user}
+                            />
+                            <QuickStats
+                                user={user}
+                            />
+                        </>
                     )
                 }
             </header>
