@@ -5,12 +5,16 @@ import './bio.css'
 
 const Bio = (props) => {
 
+    const getAccountAge = () => {
+        return Math.floor(((new Date().getTime()) - Date.parse(props.user.CreatedAt)) / (1000*60*60*24 * 365))
+    }
+
     return (
         <header id={"bio"}>
                 <img src={props.user.AvatarURL} id={"avatar"} />
                 <div id={"bio-info"}>
-                    <h2>{props.user.Name}</h2>
-                    <h3>@{props.user.Login}</h3>
+                    <h2>@{props.user.Login} ({props.user.Name})</h2>
+                    <h3>Created {getAccountAge()} years ago</h3>
                     <p>
                         {
                             reactStringReplace(props.user.Bio, /\B@([\w-]+)/gm, (match, i) => (

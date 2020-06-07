@@ -18,7 +18,6 @@ const Profile = (props) => {
             (userData => userData.json())
         ).then (
             json => {
-                json.Login = username;
                 setUser(json)
             }
         ).catch((e) => {

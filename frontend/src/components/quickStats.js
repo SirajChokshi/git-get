@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Doughnut, Pie } from 'react-chartjs-2';
 import colors from '../static/colors'
+import {Link} from '@reach/router'
 import './quickStats.css'
 
 const QuickStats = (props) => {
@@ -53,7 +54,70 @@ const QuickStats = (props) => {
 
     useEffect(() => getMainLanguages(props.user.Repositories), [props.user.Login])
 
+    const [topCollaborators, setTopCollaborators] = useState({loading: true})
+
+    const getTopCollaborators = (repos) => {
+
+        let collabCount = {}
+
+        for (const repo of repos) {
+            console.log(repo)
+            if (repo.Collaborators) {
+                for (const user of repo.Collaborators) {
+                    if (user) {
+                        if (collabCount[user]) {
+                            console.log(collabCount[user])
+                            collabCount[user] += 1
+                        } else {
+                            collabCount[user] = 1
+                        }
+                    }
+                }
+            }
+        }
+
+        let colArray = []
+
+        for (const key in collabCount) {
+            colArray.push([key, collabCount[key]])
+        }
+
+        colArray.sort((a, b) => (
+            b[1] - a[1]
+        ))
+
+        colArray = colArray.slice(0,5)
+
+        setTopCollaborators(colArray)
+    }
+
+    useEffect(() => getTopCollaborators(props.user.Repositories), [props.user.Login])
+
+    const getCommitsPerDay = () => {
+        const days = ((new Date().getTime()) - Date.parse(props.user.CreatedAt)) / (1000*60*60*24)
+        return (props.user.TotalContributions)/days
+    }
+
     return (
+        <>
+        <ul id="big-nums">
+            <li>
+                <span>{props.user.TotalContributions}</span>
+                Commits
+            </li>
+            <li>
+                <span>{props.user.PullRequestsMade}</span>
+                Pull Requests
+            </li>
+            <li>
+                <span>{getCommitsPerDay().toFixed(2)}</span>
+                Commits/Day
+            </li>
+            <li>
+                <span>{props.user.Stars}</span>
+                Stars
+            </li>
+        </ul>
         <section id="stats">
             <div>
                 <h3>Repos per Language</h3>
@@ -70,8 +134,37 @@ const QuickStats = (props) => {
                 }
             </div>
             <div></div>
-            <div></div>
+            <div>
+                <h3>Frequent Collaborators</h3>
+                {
+                    topCollaborators.loading 
+                    ?
+                        <>Loading...</>
+                    :
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        User
+                                    </th>
+                                    <th className="numeric">
+                                        Collaborations
+                                    </th>
+                                </tr>
+                            {
+                                topCollaborators.map((col) => (
+                                    <tr key={col[0] + col[1]}>
+                                        <td><Link to={`/${col[0]}`}>@{col[0]}</Link></td>
+                                        <td className="numeric">{col[1]}</td>
+                                    </tr>
+                                ))
+                            }
+                            </tbody>
+                        </table>
+                }
+            </div>
         </section>
+        </>
     );
 }
 

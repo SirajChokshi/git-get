@@ -17,3 +17,48 @@
 h3 {
     font-size: 20px;
 }
+
+#stats div table {
+    width: 100%;
+    line-height: 1.5;
+}
+
+#stats div table tr th {
+    text-align: left;
+} 
+
+#stats div table tr td.numeric, #stats div table tr th.numeric {
+    text-align: right;
+}
+
+#stats div table tr td a {
+    color: aquamarine;
+    text-decoration: none;
+}
+
+ul#big-nums {
+    box-sizing: border-box;
+    padding: 0.5em;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.2);
+    margin: 10px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+    list-style: none;
+}
+
+ul#big-nums li {
+    text-align: center;
+    font-size: 18px;
+}
+
+ul#big-nums li span {
+    font-size: 30px;
+    display: block;
+    text-align: center;
+    color:aquamarine;
+    font-weight: 700;
+}

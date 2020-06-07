@@ -117,6 +117,7 @@ type JSONUser struct {
 	Organizations        []string
 	Repositories         []Repository
 	TotalContributions   int
+	Stars                int
 	CommitsPerDay        []Day
 	PullRequestsMade     int
 	PullRequestsReviewed int
@@ -269,7 +270,7 @@ func formatUser(Data *Response) *JSONUser {
 		contributors := make(map[string]bool)
 
 		for _, node := range repo.Object.History.Nodes {
-			if node.Author.User.Login == res.Login {
+			if node.Author.User.Login != res.Login {
 				contributors[node.Author.User.Login] = true
 			}
 		}
@@ -284,6 +285,12 @@ func formatUser(Data *Response) *JSONUser {
 		out.Stars = repo.Stargazers.TotalCount
 
 		repos = append(repos, out)
+	}
+
+	totalStars := 0
+
+	for _, repo := range repos {
+		totalStars += repo.Stars
 	}
 
 	var days []Day
@@ -313,6 +320,7 @@ func formatUser(Data *Response) *JSONUser {
 		Organizations:        organizations,
 		Repositories:         repos,
 		CommitsPerDay:        days,
+		Stars:                totalStars,
 		TotalContributions:   res.ContributionsCollection.ContributionCalendar.TotalContributions,
 		PullRequestsMade:     res.ContributionsCollection.PullRequestContributions.TotalCount,
 		PullRequestsReviewed: res.ContributionsCollection.PullRequestReviewContributions.TotalCount,
