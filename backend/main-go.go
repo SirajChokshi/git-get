@@ -62,16 +62,17 @@ func get(w http.ResponseWriter, r *http.Request) {
 	userRef := client.Collection("users")
 	if params[2] != "" {
 		// Get user from firestore
-		doc, _ := userRef.Doc(params[2]).Get(ctx)
+		lowercase := strings.ToLower(params[2])
+		doc, _ := userRef.Doc(lowercase).Get(ctx)
 		if doc.Data() == nil {
-			// No user exists in firebase, make new one.
-			println("Creating user %s", params[2])
-			jsonUser := makeRequest(params[2])
+			// No user exists in firebase, make new 5000one.
+			println("Creating user %s", lowercase)
+			jsonUser := makeRequest(lowercase)
 			// The Set() command either creates a user or updates the user.
-			_, err := userRef.Doc(params[2]).Set(ctx, jsonUser)
+			_, err := userRef.Doc(lowercase).Set(ctx, jsonUser)
 			// Handle the error
 			if err != nil {
-				log.Fatalf("Failed to add user: %s", params[2])
+				log.Fatalf("Failed to add user: %s", lowercase)
 			} else {
 				json.NewEncoder(w).Encode(jsonUser)
 			}
@@ -82,11 +83,11 @@ func get(w http.ResponseWriter, r *http.Request) {
 				json.NewEncoder(w).Encode(doc.Data())
 			} else {
 				// Make the request if they haven't been updated in 6 hours
-				println("Updating user %s, last update: %s", params[2], lastUpdated.String())
-				jsonUser := makeRequest(params[2])
-				_, err := userRef.Doc(params[2]).Set(ctx, jsonUser)
+				println("Updating user %s, last update: %s", lowercase, lastUpdated.String())
+				jsonUser := makeRequest(lowercase)
+				_, err := userRef.Doc(lowercase).Set(ctx, jsonUser)
 				if err != nil {
-					log.Fatalf("Failed to add user: %s", params[2])
+					log.Fatalf("Failed to add user: %s", lowercase)
 				} else {
 					json.NewEncoder(w).Encode(map[string]interface{}{"response": jsonUser})
 				}
