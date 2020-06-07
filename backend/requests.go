@@ -16,6 +16,7 @@ const API_URL = "https://api.github.com/graphql"
 type Response struct {
 	User struct {
 		Name          string `json:"name"`
+		Login         string `json:"login"`
 		AvatarURL     string `json:"avatarUrl"`
 		WebsiteURL    string `json:"websiteUrl"`
 		Followers     map[string]int
@@ -103,6 +104,7 @@ type Day struct {
 // JSONUser ... type to easily access user data after a request
 type JSONUser struct {
 	Name                 string
+	Login                string
 	AvatarURL            string
 	WebsiteURL           string
 	Followers            int
@@ -147,6 +149,7 @@ func makeRequest(username string) *JSONUser {
         query {
             user(login: "` + username + `") {
 				name
+				login
 				avatarUrl
 				websiteUrl
 				followers {
@@ -266,7 +269,9 @@ func formatUser(Data *Response) *JSONUser {
 		contributors := make(map[string]bool)
 
 		for _, node := range repo.Object.History.Nodes {
-			contributors[node.Author.User.Login] = true
+			if node.Author.User.Login == res.Login {
+				contributors[node.Author.User.Login] = true
+			}
 		}
 
 		var collaborators []string
@@ -295,6 +300,7 @@ func formatUser(Data *Response) *JSONUser {
 
 	formattedUser := JSONUser{
 		Name:                 res.Name,
+		Login:                res.Login,
 		AvatarURL:            res.AvatarURL,
 		WebsiteURL:           res.WebsiteURL,
 		Followers:            res.Followers["totalCount"],
