@@ -9,10 +9,12 @@ const client_secret = `b6b9b2b580c0dfc25499d34d4e4fc9d4f33f0ce2`
 
 const Profile = (props) => {
 
+    const BASE_URL = "https://arcane-ocean-76968.herokuapp.com/"
+
     const [user, setUser] = useState({loading: true})
 
     const fetchUser = (username) => {
-        fetch(`http://localhost:8080/get/${username}`,
+        fetch(`${BASE_URL}get/${username}`,
             {method: "GET", headers: {'Content-Type': 'application/json'}}
         ).then(
             (userData => userData.json())

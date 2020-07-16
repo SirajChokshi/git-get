@@ -4,10 +4,12 @@ import './rateLimit.css'
 
 const RateLimit = (props) => {
 
+    const BASE_URL = "https://arcane-ocean-76968.herokuapp.com/"
+
     const [rateLimit, setRateLimit] = useState({loading: true})
 
     const fetchRateLimit = () => {
-        fetch(`http://localhost:8080/ratelimit/`,
+        fetch(`${BASE_URL}ratelimit/`,
             {method: "GET", headers: {'Content-Type': 'application/json'}}
         ).then(
             (limit => limit.json())
