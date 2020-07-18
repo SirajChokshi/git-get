@@ -12,7 +12,7 @@ const Footer = () => (
                 <h4>About</h4>
                 <p>
                     Git Get. Source on Github.
-                    <br />&copy; Copyright 2020  <a href="https://sirajchokshi.com">Siraj Chokshi</a>, <a href="https://daviskeene.com">Davis Keene</a>
+                    <br />&copy; Copyright 2020  <a href="https://sirajchokshi.com" target="_blank">Siraj Chokshi</a>, <a href="https://daviskeene.com" target="_blank">Davis Keene</a>
                 </p>
             </div>
         </div>
