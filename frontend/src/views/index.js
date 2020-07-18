@@ -14,7 +14,7 @@ const Index = () => {
 
     return (
         <div className="App">
-            <header className="App-header">
+            <header className="app-header">
                 <h1>Search for a GitHub user or organization:</h1>
                 <div id="search-wrapper">
                     <input style={{fontSize: "24px"}} onChange={(e) => updateQuery(e.target.value)} onKeyDown={_handleKeyDown} />

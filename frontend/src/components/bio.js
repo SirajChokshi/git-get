@@ -13,7 +13,7 @@ const Bio = (props) => {
         <header id={"bio"}>
                 <img src={props.user.AvatarURL} id={"avatar"} />
                 <div id={"bio-info"}>
-                    <h2>@{props.user.Login} ({props.user.Name})</h2>
+                    <h2>@{props.user.Login} {props.user.Name && `(${props.user.Name})`}</h2>
                     <h3>Created {getAccountAge()} years ago</h3>
                     <p>
                         {
