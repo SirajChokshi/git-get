@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {FaSpinner} from 'react-icons/fa'
+import LoadingIndicator from "./LoadingIndicator"
 import './rateLimit.scss'
 
 const RateLimit = (props) => {
@@ -31,7 +31,7 @@ const RateLimit = (props) => {
         {rateLimit.loading
                     ?
                     <>
-                        <span><FaSpinner size={"1.3em"} className={"spin-icon"} /></span>
+                        <span><LoadingIndicator size={"1.3em"} /></span>
                         <span>Loading...</span>
                     </>
                     :

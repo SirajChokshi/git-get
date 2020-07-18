@@ -12,15 +12,17 @@ html, body {
   max-width: 1160px;
 }
 
-.fixed-centered {
-  position: fixed;
-  left: calc(50% - 1.25em);
-  top: calc(40% - 1.25em);
+.flex-centered {
+  height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .spin-icon {
-    animation: App-logo-spin infinite 2s linear;
+    animation: spin infinite 2s linear;
   }
 }
 
@@ -55,7 +57,7 @@ h1 {
   }
 }
 
-@keyframes App-logo-spin {
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }

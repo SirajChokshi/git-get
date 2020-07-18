@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { Link, Redirect } from '@reach/router';
-import {FaSpinner} from 'react-icons/fa'
 import Bio from "../components/bio";
 import QuickStats from "../components/quickStats"
+import LoadingIndicator from "../components/LoadingIndicator"
 
 const client_id = `Iv1.82a68fd3b00d5cab`
 const client_secret = `b6b9b2b580c0dfc25499d34d4e4fc9d4f33f0ce2`
@@ -38,7 +38,7 @@ const Profile = (props) => {
             <header className="App-header">
                 {user.loading
                     ?
-                    <FaSpinner size={"2.5em"} className={"spin-icon fixed-centered"} />
+                    <LoadingIndicator />
                     :
                     (
                         user.message
