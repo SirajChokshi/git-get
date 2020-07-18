@@ -1,3 +1,5 @@
+@import 'colors';
+
 header#bio {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -8,7 +10,7 @@ header#bio {
     box-sizing: border-box;
     padding: 0.5em;
     border-radius: 5px;
-    background: rgba(255,255,255,0.2);
+    background: $light;
     margin-top: 1em;
 }
 
@@ -21,38 +23,42 @@ header#bio {
     padding-right: 1em;
     position: relative;
     width: 100%;
-}
 
-#avatar img {
-    width: 100%;
+    img {
+        width: 100%;
+    }
 }
 
 #extra-bio-info {
     grid-area: 1 / 4 / 2 / 5;
 }
 
-#bio-info h2, h3 {
-    margin: 0;
-}
+#bio-info {
 
-#bio-info h2 {
-    font-size: 28px;
-}
+    h2, h3 {
+        margin: 0;
+    }
 
-#bio-info h3 {
-    font-size: 20px;
-    opacity: 0.6;
-    font-weight: 500;
-}
+    h2 {
+        font-size: 28px;
+    }
 
-#bio-info p {
-    font-size: 20px;
-    margin: 0.5em 0;
-}
+    h3 {
+        font-size: 20px;
+        opacity: 0.6;
+        font-weight: 500;
+    }
 
-#bio-info a {
-    color: aquamarine;
-    text-decoration: none;
+    p {
+        font-size: 20px;
+        margin: 0.5em 0;
+    }
+
+    a {
+        color: $primary;
+        text-decoration: none;
+    }
+    
 }
 
 table {
@@ -77,10 +83,10 @@ td:nth-child(1) {
     text-align: right;
     font-size: 16px;
     margin-left: 15px;
-}
 
-.badge .num  {
-    font-size: 24px;
-    font-weight: 600;
-    color: aquamarine;
-}
+    .num  {
+        font-size: 24px;
+        font-weight: 600;
+        color: $primary;
+    }
+} 

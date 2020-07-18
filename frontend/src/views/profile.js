@@ -38,7 +38,7 @@ const Profile = (props) => {
             <header className="App-header">
                 {user.loading
                     ?
-                    <FaSpinner size={"1.3em"} className={"spin-icon"} />
+                    <FaSpinner size={"2.5em"} className={"spin-icon fixed-centered"} />
                     :
                     (
                         user.message

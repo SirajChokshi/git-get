@@ -1,0 +1,65 @@
+@import 'colors';
+
+html, body {
+  background-color: $dark;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.container {
+  margin: 0 auto;
+  width: 95%;
+  max-width: 1160px;
+}
+
+.fixed-centered {
+  position: fixed;
+  left: calc(50% - 1.25em);
+  top: calc(40% - 1.25em);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spin-icon {
+    animation: App-logo-spin infinite 2s linear;
+  }
+}
+
+h1 {
+  margin-top: 30vh;
+  text-align: center;
+}
+
+#search-wrapper {
+  display: flex;
+  overflow: hidden;
+  border-radius: 7px;
+
+  input {
+    display: block;
+    flex: 3;
+    height: 1.5em;
+    padding: 0.5em 1em;
+    border: none;
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    background-color: $primary;
+    color: $dark;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

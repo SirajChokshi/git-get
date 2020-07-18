@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Doughnut, Pie } from 'react-chartjs-2';
 import colors from '../static/colors'
 import {Link} from '@reach/router'
-import './quickStats.css'
+import './quickStats.scss'
 
 const QuickStats = (props) => {
     

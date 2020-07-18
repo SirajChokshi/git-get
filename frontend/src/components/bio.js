@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import reactStringReplace from 'react-string-replace'
 import {Link} from '@reach/router'
-import './bio.css'
+import './bio.scss'
 
 const Bio = (props) => {
 

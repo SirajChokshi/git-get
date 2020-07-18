@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {FaSpinner} from 'react-icons/fa'
-import './rateLimit.css'
+import './rateLimit.scss'
 
 const RateLimit = (props) => {
 
