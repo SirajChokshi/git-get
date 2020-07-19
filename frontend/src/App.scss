@@ -41,6 +41,7 @@ h1 {
   overflow: hidden;
   border-radius: 7px;
   max-width: 800px;
+  width: 95%;
   margin: 0 auto;
 
   input {
@@ -49,6 +50,11 @@ h1 {
     height: 1.5em;
     padding: 0.5em 1em;
     border: none;
+    font-size: 24px;
+
+    @media only screen and (max-width: 850px) {
+      font-size: 18px;
+    }
   }
 
   a {

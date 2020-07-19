@@ -119,7 +119,7 @@ const QuickStats = (props) => {
             </li>
         </ul>
         <section id="stats">
-            <div>
+            <div style={{position: "relative"}}>
                 <h3>Repos per Language</h3>
                 {
                     mainLanguages.loading 
@@ -129,7 +129,7 @@ const QuickStats = (props) => {
                         <Doughnut 
                             data={mainLanguages}
                             legend={{position: 'left', labels: {boxWidth: 12, fontSize: 12, fontColor: "white"}}} 
-                            options={{cutoutPercentage: 40}}
+                            options={{cutoutPercentage: 40, responsive: false}}
                         />
                 }
             </div>
