@@ -2,7 +2,7 @@
 
 header#bio {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 1fr;
     grid-column-gap: 0;
     grid-row-gap: 0;
@@ -15,7 +15,7 @@ header#bio {
 }
 
 #bio-info {
-    grid-area: 1 / 2 / 2 / 4;
+    grid-area: 1 / 2 / 2 / 6;
 }
 #avatar {
     grid-area: 1 / 1 / 2 / 2;
@@ -23,40 +23,50 @@ header#bio {
     padding-right: 1em;
     position: relative;
     width: 100%;
+    text-align: center;
 
     img {
         width: 100%;
+        margin: 0 auto;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin: 0;
+
+        &:nth-child(3) {
+            opacity: 0.6;
+            font-size: 20px;
+        }
     }
 }
 
 #extra-bio-info {
-    grid-area: 1 / 4 / 2 / 5;
+    grid-area: 1 / 4 / 2 / 6;
 }
 
 #bio-info {
 
-    h2, h3 {
-        margin: 0;
-    }
-
-    h2 {
-        font-size: 28px;
-    }
-
     h3 {
         font-size: 20px;
-        opacity: 0.6;
-        font-weight: 500;
+        margin: 0.5em 0;
+        font-weight: 400;
     }
 
     p {
         font-size: 20px;
-        margin: 0.5em 0;
+        margin: 0.5em 0 0;
     }
 
     a {
         color: $primary;
         text-decoration: none;
+    }
+
+    td:nth-child(1) {
+        opacity: 0.6;
+        padding-right: 20px;
+        padding-left: 0;
     }
     
 }
@@ -65,11 +75,6 @@ table {
     font-size: 16px;
     border: none;
     border-image-width: 0;
-}
-
-td:nth-child(1) {
-    opacity: 0.6;
-    padding-right: 20px;
 }
 
 #extra-bio-info {

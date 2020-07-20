@@ -32,10 +32,14 @@ h3 {
         td.numeric, th.numeric {
             text-align: right;
         }
-    
-        td a {
-            color: $primary;
-            text-decoration: none;
+
+        td {
+            opacity: 1;
+
+            a {
+                color: $primary;
+                text-decoration: none;
+            }
         }
     }
 
