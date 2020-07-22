@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -70,6 +71,7 @@ func get(w http.ResponseWriter, r *http.Request) {
 			jsonUser := makeRequest(lowercase)
 			// The Set() command either creates a user or updates the user.
 			_, err := userRef.Doc(lowercase).Set(ctx, jsonUser)
+			println("")
 			// Handle the error
 			if err != nil {
 				log.Fatalf("Failed to add user: %s", lowercase)
@@ -79,7 +81,8 @@ func get(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// Check the last updated timestamp
 			lastUpdated := doc.UpdateTime
-			if lastUpdated.Sub(time.Now()).Hours() <= 6 {
+			if time.Now().Sub(lastUpdated).Hours() <= 6 {
+				println(lastUpdated.Sub(time.Now()).Hours())
 				json.NewEncoder(w).Encode(doc.Data())
 			} else {
 				// Make the request if they haven't been updated in 6 hours
@@ -103,7 +106,18 @@ func handleRequest() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/get/", get)
 	http.HandleFunc("/ratelimit/", getRemainingRequests)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(GetPort(), nil))
+}
+
+// Get the Port from the environment so we can run on Heroku
+func GetPort() string {
+	var port = os.Getenv("PORT")
+	// Set a default port if there is nothing in the environment
+	if port == "" {
+		port = "8080"
+		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
+	}
+	return ":" + port
 }
 
 func main() {
