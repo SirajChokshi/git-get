@@ -1,0 +1,21 @@
+@import 'colors';
+
+#rate-limit {
+    position: fixed;
+    bottom: 0;
+    font-size: 16px;
+    background: $light;
+    color: white;
+    padding: 0.25em 1.25em 0.5em 1.25em;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+
+    span {
+        display: block;
+
+        &:nth-child(1) {
+            font-size: 24px;
+            font-weight: 700;
+        }
+    }
+}
