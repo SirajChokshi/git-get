@@ -21,6 +21,7 @@ const Profile = (props) => {
         ).then (
             json => {
                 setUser(json)
+                console.log(json)
             }
         ).catch((e) => {
             console.error(e);
