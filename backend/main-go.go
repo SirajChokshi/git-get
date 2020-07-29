@@ -28,6 +28,7 @@ func createClient(ctx context.Context) *firestore.Client {
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprint(w, "Hello, World!")
 }
 
@@ -41,6 +42,7 @@ type User struct {
 
 func get(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	// Make the app context and client
 	ctx := context.Background()
 	client := createClient(ctx)

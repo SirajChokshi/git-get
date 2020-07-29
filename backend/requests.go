@@ -336,6 +336,7 @@ func formatUser(Data *Response) *JSONUser {
  *	note this endpoint does not count against the rate limit
  */
 func getRemainingRequests(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	graphqlClient := graphql.NewClient(API_URL)
 	graphqlRequest := graphql.NewRequest(`
         query {
