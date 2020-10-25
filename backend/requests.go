@@ -270,9 +270,7 @@ func formatUser(Data *Response) *JSONUser {
 		contributors := make(map[string]bool)
 
 		for _, node := range repo.Object.History.Nodes {
-			if node.Author.User.Login != res.Login {
-				contributors[node.Author.User.Login] = true
-			}
+			contributors[node.Author.User.Login] = true
 		}
 
 		var collaborators []string

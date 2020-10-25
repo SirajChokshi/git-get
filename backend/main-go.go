@@ -40,6 +40,54 @@ type User struct {
 	Object string `json:"data"`
 }
 
+func update(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	// Make the app context and client
+	ctx := context.Background()
+	client := createClient(ctx)
+	// Close client on application end
+	defer client.Close()
+	// Add data
+
+	url := r.RequestURI
+	// Get the name from the string
+	params := strings.Split(url, "/")
+	userRef := client.Collection("users")
+	if params[2] != "" {
+		// Get user from firestore
+		lowercase := strings.ToLower(params[2])
+		doc, _ := userRef.Doc(lowercase).Get(ctx)
+		if doc.Data() == nil {
+			// No user exists in firebase, make new 5000one.
+			println("Creating user %s", lowercase)
+			jsonUser := makeRequest(lowercase)
+			// The Set() command either creates a user or updates the user.
+			_, err := userRef.Doc(lowercase).Set(ctx, jsonUser)
+			println("")
+			// Handle the error
+			if err != nil {
+				log.Fatalf("Failed to add user: %s", lowercase)
+			} else {
+				json.NewEncoder(w).Encode(jsonUser)
+			}
+		} else {
+			// Make the request if they haven't been updated in 6 hours
+			println("Updating user %s", lowercase)
+			jsonUser := makeRequest(lowercase)
+			_, err := userRef.Doc(lowercase).Set(ctx, jsonUser)
+			if err != nil {
+				log.Fatalf("Failed to add user: %s", lowercase)
+			} else {
+				json.NewEncoder(w).Encode(map[string]interface{}{"response": jsonUser})
+			}
+		}
+	} else {
+		json.NewEncoder(w).Encode(map[string]interface{}{"user": nil})
+	}
+
+}
+
 func get(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -108,6 +156,7 @@ func handleRequest() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/get/", get)
 	http.HandleFunc("/ratelimit/", getRemainingRequests)
+	http.HandleFunc("/update/", update)
 	log.Fatal(http.ListenAndServe(GetPort(), nil))
 }
 
