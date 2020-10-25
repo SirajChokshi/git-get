@@ -4,7 +4,7 @@ import './rateLimit.scss'
 
 const RateLimit = () => {
 
-    const BASE_URL = "https://arcane-ocean-76968.herokuapp.com/"
+    const BASE_URL = process.env.REACT_APP_API_URL;
 
     const [rateLimit, setRateLimit] = useState<number | null>(null);
 
