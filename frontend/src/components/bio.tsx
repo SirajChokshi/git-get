@@ -1,34 +1,37 @@
 import React from "react";
 import reactStringReplace from 'react-string-replace'
+import {User} from '../types'
 import {Link} from '@reach/router'
 import './bio.scss'
 
-const Bio = (props) => {
+interface BioProps {
+    user: User;
+}
 
-    const getAccountAge = () => {
-        return Math.floor(((new Date().getTime()) - Date.parse(props.user.CreatedAt)) / (1000*60*60*24 * 365))
+const Bio = (props: BioProps) => {
+
+    const {user} = props;
+
+    const getAccountAge = (date: string) : number => {
+        return Math.floor(((new Date().getTime()) - Date.parse(date)) / (1000*60*60*24 * 365))
     }
 
     return (
-        <header id={"bio"}>
+        <header id="bio">
                 <div id="avatar">
-                    <img src={props.user.AvatarURL} />
-                    {
-                        props.user.Name && (
-                            <h2>{props.user.Name}</h2>
-                        )
-                    }
-                    <h2>@{props.user.Login}</h2>
+                    <img src={user.AvatarURL} />
+                    { user.Name && <h2>{user.Name}</h2> }
+                    <h2>@{user.Login}</h2>
                 </div>
-                <div id={"bio-info"}>
+                <div id="bio-info">
                     <p>
                         {
-                            reactStringReplace(props.user.Bio, /\B@([\w-]+)/gm, (match, i) => (
+                            reactStringReplace(user.Bio, /\B@([\w-]+)/gm, (match, i) => (
                                 <Link key={i} to={`/${match}`} >@{match}</Link>
                             ))
                         }
                     </p>
-                    <h3>Created {getAccountAge()} years ago</h3>
+                    <h3>Created {getAccountAge(user.CreatedAt)} years ago</h3>
                     <table>
                         {
                             props.user.Location && (
@@ -39,7 +42,7 @@ const Bio = (props) => {
                             )
                         }
                         {
-                            props.user.Company && (
+                            user.Company && (
                                 <tr>
                                     <td>Company</td>
                                     <td>
@@ -53,16 +56,16 @@ const Bio = (props) => {
                             )
                         }
                         {
-                            props.user.WebsiteURL && (
+                            user.WebsiteURL && (
                                 <tr>
                                     <td>Website</td>
                                     <td>
                                         {
-                                            (props.user.WebsiteURL).match(/^(http|https):\/\//)
+                                            (user.WebsiteURL).match(/^(http|https):\/\//)
                                                 ?
-                                                <a href={props.user.WebsiteURL} target={"_blank"} rel={"noopener"}>{props.user.WebsiteURL}</a>
+                                                <a href={user.WebsiteURL} target={"_blank"} rel={"noopener"}>{user.WebsiteURL}</a>
                                                 :
-                                                <a href={"http://" + props.user.WebsiteURL} target={"_blank"} rel={"noopener"}>{props.user.WebsiteURL}</a>
+                                                <a href={"http://" + user.WebsiteURL} target={"_blank"} rel={"noopener"}>{user.WebsiteURL}</a>
                                         }
                                     </td>
                                 </tr>
@@ -72,7 +75,7 @@ const Bio = (props) => {
                     </table>
                 </div>
                 <div id="extra-bio-info">
-                    { props.user.type === "Organization" &&
+                    {/* { user.type !== "Organization" && */}
                         <>
                         <div className="badge">
                             <div className="num">{props.user.Repositories.length >= 50 ? "50+" : props.user.Repositories.length}</div>
@@ -87,7 +90,7 @@ const Bio = (props) => {
                                 Following
                             </div>
                         </>
-                    }
+                    {/* } */}
                 </div>
         </header>
     );
