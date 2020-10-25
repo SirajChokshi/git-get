@@ -40,7 +40,7 @@ const Profile = (props: ProfileProps) => {
 
     return (
         <div className="App">
-            <header className="App-header">
+            <header>
                 {user === null
                     ?
                     <LoadingIndicator size={"2.5em"} />
