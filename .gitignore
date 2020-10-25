@@ -1,4 +1,6 @@
 .DS_Store
 .idea/
 backend/git-get-bb9b32a58ecf.json
+backend/git-get-firebase-adminsdk-ckz9p-e5fcea552b.json
 backend/vendor/
+*.env

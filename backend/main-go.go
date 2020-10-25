@@ -29,7 +29,7 @@ func createClient(ctx context.Context) *firestore.Client {
 
 func homePage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprint(w, "Hello, World!")
+	http.Redirect(w, r, "https://gitget.now.sh/api", http.StatusSeeOther)
 }
 
 type Data struct {
