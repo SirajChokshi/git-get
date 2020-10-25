@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import reactStringReplace from 'react-string-replace'
 import {Link} from '@reach/router'
 import './bio.scss'
@@ -72,10 +72,7 @@ const Bio = (props) => {
                     </table>
                 </div>
                 <div id="extra-bio-info">
-                    { props.user.type === "Organization"
-                        ?
-                           <></>
-                        :
+                    { props.user.type === "Organization" &&
                         <>
                         <div className="badge">
                             <div className="num">{props.user.Repositories.length >= 50 ? "50+" : props.user.Repositories.length}</div>

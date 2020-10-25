@@ -4,12 +4,10 @@ import Bio from "../components/bio";
 import QuickStats from "../components/quickStats"
 import LoadingIndicator from "../components/LoadingIndicator"
 
-const client_id = `Iv1.82a68fd3b00d5cab`
-const client_secret = `b6b9b2b580c0dfc25499d34d4e4fc9d4f33f0ce2`
-
 const Profile = (props) => {
 
-    const BASE_URL = "https://arcane-ocean-76968.herokuapp.com/"
+    // const BASE_URL = "https://arcane-ocean-76968.herokuapp.com/"
+    const BASE_URL = "http://localhost:8080/"
 
     const [user, setUser] = useState({loading: true})
 
