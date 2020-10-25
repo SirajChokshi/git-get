@@ -9,9 +9,8 @@ const Error = () => {
                 <h1>
                     404
                 </h1>
-                <p>
-                    User not found. <br />
-                    <Link to={"/"}>Return home.</Link>
+                <p style={{textAlign: "center"}}>
+                    User not found. <Link to={"/"} style={{color: "white"}}>Return home.</Link>
                 </p>
             </header>
         </div>
