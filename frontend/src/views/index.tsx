@@ -1,12 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, KeyboardEvent} from "react";
 import {Link, navigate} from '@reach/router'
-import logo from '../logo.svg';
 
 const Index = () => {
 
-    const [query, updateQuery] = useState("")
+    const [query, updateQuery] = useState<string>("")
 
-    const _handleKeyDown = (e) => {
+    const _handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
             navigate(`/${query}`)
         }

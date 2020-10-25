@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Link, Redirect } from '@reach/router';
+import Error from './error'
 import { User } from '../types'
 import Bio from "../components/bio";
 import QuickStats from "../components/quickStats"
@@ -13,7 +14,7 @@ const Profile = (props: ProfileProps) => {
 
     const BASE_URL = process.env.REACT_APP_API_URL;
 
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | -1 | null>(null);
 
     const fetchUser = (username: string) : void => {
         fetch(`${BASE_URL}get/${username}`,
@@ -27,6 +28,7 @@ const Profile = (props: ProfileProps) => {
             }
         ).catch((e) => {
             console.error(e);
+            setUser(-1);
         })
     }
 
@@ -42,6 +44,10 @@ const Profile = (props: ProfileProps) => {
                 {user === null
                     ?
                     <LoadingIndicator size={"2.5em"} />
+                    :
+                    user === -1
+                    ?
+                    <Error />
                     :
                     (
                         <>

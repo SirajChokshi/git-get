@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import LoadingIndicator from "./LoadingIndicator"
 import './rateLimit.scss'
 
-const RateLimit = (props) => {
+const RateLimit = () => {
 
     const BASE_URL = "https://arcane-ocean-76968.herokuapp.com/"
 

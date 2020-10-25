@@ -3,7 +3,7 @@ import './Nav.scss'
 import { Link } from '@reach/router'
 import { FaGlasses } from 'react-icons/fa'
 
-const NavLink = props => (
+const NavLink = (props: any) => (
     <Link
       {...props}
       getProps={({ isCurrent }) => {
