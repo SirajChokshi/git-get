@@ -24,8 +24,6 @@ const RateLimit = () => {
 
     useEffect(() => fetchRateLimit(), [rateLimit])
 
-    
-
     return (
         <div id="rate-limit">
         {rateLimit === null
