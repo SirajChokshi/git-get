@@ -1,4 +1,4 @@
-const colors = {
+const colors: any = {
     "1C Enterprise": {
         "color": "#814CCC",
         "url": "https://github.com/trending?l=1C-Enterprise"

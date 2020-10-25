@@ -2,11 +2,11 @@ import React, {useState, useEffect} from "react";
 import LoadingIndicator from "./LoadingIndicator"
 import './rateLimit.scss'
 
-const RateLimit = (props) => {
+const RateLimit = () => {
 
-    const BASE_URL = "https://arcane-ocean-76968.herokuapp.com/"
+    const BASE_URL = process.env.REACT_APP_API_URL;
 
-    const [rateLimit, setRateLimit] = useState({loading: true})
+    const [rateLimit, setRateLimit] = useState<number | null>(null);
 
     const fetchRateLimit = () => {
         fetch(`${BASE_URL}ratelimit/`,
@@ -24,11 +24,9 @@ const RateLimit = (props) => {
 
     useEffect(() => fetchRateLimit(), [rateLimit])
 
-    
-
     return (
         <div id="rate-limit">
-        {rateLimit.loading
+        {rateLimit === null
                     ?
                     <>
                         <span><LoadingIndicator size={"1.3em"} /></span>

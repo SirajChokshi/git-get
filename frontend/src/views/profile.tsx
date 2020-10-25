@@ -1,17 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import { Link, Redirect } from '@reach/router';
+import Error from './error'
+import { User } from '../types'
 import Bio from "../components/bio";
 import QuickStats from "../components/quickStats"
 import LoadingIndicator from "../components/LoadingIndicator"
 
-const Profile = (props) => {
+interface ProfileProps {
+    username: string;
+}
 
-    // const BASE_URL = "https://arcane-ocean-76968.herokuapp.com/"
-    const BASE_URL = "http://localhost:8080/"
+const Profile = (props: ProfileProps) => {
 
-    const [user, setUser] = useState({loading: true})
+    const BASE_URL = process.env.REACT_APP_API_URL;
 
-    const fetchUser = (username) => {
+    const [user, setUser] = useState<User | -1 | null>(null);
+
+    const fetchUser = (username: string) : void => {
         fetch(`${BASE_URL}get/${username}`,
             {method: "GET", headers: {'Content-Type': 'application/json'}}
         ).then(
@@ -23,11 +28,12 @@ const Profile = (props) => {
             }
         ).catch((e) => {
             console.error(e);
+            setUser(-1);
         })
     }
 
     useEffect(() => {
-        setUser({loading: true})
+        setUser(null)
         fetchUser(props.username)
     }, [props.username])
     useEffect(() => console.log(user), [user])
@@ -35,15 +41,15 @@ const Profile = (props) => {
     return (
         <div className="App">
             <header className="App-header">
-                {user.loading
+                {user === null
                     ?
-                    <LoadingIndicator />
+                    <LoadingIndicator size={"2.5em"} />
+                    :
+                    user === -1
+                    ?
+                    <Error />
                     :
                     (
-                        user.message
-                        ?
-                            <h1>Error -- Not Found</h1>
-                        :
                         <>
                             <Bio
                                 user={user}

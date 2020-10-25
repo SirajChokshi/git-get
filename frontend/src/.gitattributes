@@ -1,4 +1,4 @@
 serviceWorker.js linguist-detectable=false
 setupTests.js linguist-detectable=false
 App.test.js linguist-detectable=false
-static/colors.js linguist-detectable=false
+static/colors.tsx linguist-detectable=false

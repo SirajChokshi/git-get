@@ -1,15 +1,20 @@
 import React, {useState, useEffect} from "react";
+import { User, Repository } from '../types'
 import { Doughnut } from 'react-chartjs-2';
 import colors from '../static/colors'
 import {Link} from '@reach/router'
 import './quickStats.scss'
 
-const QuickStats = (props) => {
-    
-    const [mainLanguages, setMainLanguages] = useState({loading: true})
+interface QuickStatsProps {
+    user: User;
+}
 
-    const getMainLanguages = (repos) => {
-        let languageCounts = {}
+const QuickStats = (props : QuickStatsProps) => {
+    
+    const [mainLanguages, setMainLanguages] = useState<any>({loading: true})
+
+    const getMainLanguages = (repos: Repository[]) => {
+        let languageCounts: any = {}
         for (const repo of repos) {
             if (languageCounts[repo.PrimaryLanguage]) {
                 languageCounts[repo.PrimaryLanguage] += 1
@@ -17,7 +22,7 @@ const QuickStats = (props) => {
                 languageCounts[repo.PrimaryLanguage] = 1
             }
         }
-        let sorted = [];
+        let sorted:[string, number][] = [];
         for (const lang in languageCounts) {
             if (lang) {
                 sorted.push([lang, languageCounts[lang]]);
@@ -30,7 +35,7 @@ const QuickStats = (props) => {
 
         // sorted = sorted.slice(0, 8)
 
-        let lines = [], names = [], backgrounds = []
+        let lines: number[] = [], names: string[] = [], backgrounds: string[] = []
         for (const tuple of sorted) {
             names.push(tuple[0])
             lines.push(tuple[1])
@@ -54,17 +59,17 @@ const QuickStats = (props) => {
 
     useEffect(() => getMainLanguages(props.user.Repositories), [props.user.Login])
 
-    const [topCollaborators, setTopCollaborators] = useState({loading: true})
+    const [topCollaborators, setTopCollaborators] = useState<[string, number][] | null>(null)
 
-    const getTopCollaborators = (repos) => {
+    const getTopCollaborators = (repos: Repository[]) => {
 
-        let collabCount = {}
+        let collabCount: any = {}
 
         for (const repo of repos) {
             console.log(repo)
             if (repo.Collaborators) {
                 for (const user of repo.Collaborators) {
-                    if (user) {
+                    if (user && user !== props.user.Login && user !== "dependabot[bot]") {
                         if (collabCount[user]) {
                             console.log(collabCount[user])
                             collabCount[user] += 1
@@ -76,7 +81,7 @@ const QuickStats = (props) => {
             }
         }
 
-        let colArray = []
+        let colArray: [string, number][] = []
 
         for (const key in collabCount) {
             colArray.push([key, collabCount[key]])
@@ -95,7 +100,7 @@ const QuickStats = (props) => {
 
     const getCommitsPerDay = () => {
         const days = ((new Date().getTime()) - Date.parse(props.user.CreatedAt)) / (1000*60*60*24)
-        return (props.user.TotalContributions)/days
+        return (props.user.TotalContributions)/days * 7
     }
 
     return (
@@ -111,7 +116,7 @@ const QuickStats = (props) => {
             </li>
             <li>
                 <span>{getCommitsPerDay().toFixed(2)}</span>
-                Commits/Day
+                Commits/Week
             </li>
             <li>
                 <span>{props.user.Stars}</span>
@@ -137,7 +142,7 @@ const QuickStats = (props) => {
             <div>
                 <h3>Frequent Collaborators</h3>
                 {
-                    topCollaborators.loading 
+                    topCollaborators === null || topCollaborators === undefined
                     ?
                         <>Loading...</>
                     :
@@ -152,7 +157,7 @@ const QuickStats = (props) => {
                                     </th>
                                 </tr>
                             {
-                                topCollaborators.map((col) => (
+                                topCollaborators.map((col: [string, number]) => (
                                     <tr key={col[0] + col[1]}>
                                         <td><Link to={`/${col[0]}`}>@{col[0]}</Link></td>
                                         <td className="numeric">{col[1]}</td>
